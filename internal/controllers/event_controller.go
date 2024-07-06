@@ -4,7 +4,7 @@ import (
 	"go-api-event/internal/appctx"
 	"go-api-event/internal/constants"
 	"go-api-event/internal/models"
-	rabbitmq "go-api-event/internal/rabbitMQ"
+	"go-api-event/internal/services"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -12,18 +12,18 @@ import (
 )
 
 type EventController struct {
-	logger          *zap.Logger
-	rabbitMQService rabbitmq.RabbitMQService
+	logger  *zap.Logger
+	service services.Service
 }
 
-func NewEventController(logger *zap.Logger, rabbitMQService rabbitmq.RabbitMQService) *EventController {
+func NewEventController(logger *zap.Logger, service services.Service) *EventController {
 	return &EventController{
-		logger:          logger,
-		rabbitMQService: rabbitMQService,
+		logger:  logger,
+		service: service,
 	}
 }
 
-// @BasePath /v1
+// @BasePath /
 
 // @Summary Publica um evento de mensagem no RabbitMQ
 // @Description Publica uma nova mensagem no RabbitMQ
@@ -33,7 +33,7 @@ func NewEventController(logger *zap.Logger, rabbitMQService rabbitmq.RabbitMQSer
 // @Param x-correlation-id header string false "Correlation Id"
 // @Param message body models.Message true "Mensagem a ser publicada"
 // @Success 200 {object} map[string]interface{} "Resposta de sucesso"
-// @Router /event/publish [post]
+// @Router /v1//event/publish [post]
 func (e *EventController) Publish(c *gin.Context) {
 	ctx := appctx.WithLogger(c, e.logger)
 	logger := appctx.FromContext(ctx)
@@ -48,8 +48,7 @@ func (e *EventController) Publish(c *gin.Context) {
 		return
 	}
 
-	messageBytes := []byte(msg.Message)
-	err := e.rabbitMQService.SendMessage(ctx, messageBytes)
+	err := e.service.PublishEvent(ctx, msg)
 	if err != nil {
 		logger.Error(err.Error())
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
@@ -57,4 +56,30 @@ func (e *EventController) Publish(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusCreated, gin.H{"status": "Mensagem publicada com sucesso"})
+}
+
+// @BasePath /
+
+// @Summary Retorna todos os eventos
+// @Description Retorna todos os eventos dos últimos 5 minutos
+// @Tags Event
+// @Accept json
+// @Produce json
+// @Success 200 {object} []models.Event
+// @Router /v1/event/GetRecentEvents [get]
+func (e *EventController) GetRecentEvents(c *gin.Context) {
+	ctx := appctx.WithLogger(c, e.logger)
+	logger := appctx.FromContext(ctx)
+
+	correlationId := c.Request.Header.Get(constants.CorrelationIdHeader)
+	ctx = appctx.SetCorrelationId(ctx, correlationId)
+
+	resp, err := e.service.GetRecentEvents(ctx)
+	if err != nil {
+		logger.Error(err.Error())
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, resp)
 }

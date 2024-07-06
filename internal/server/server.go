@@ -12,6 +12,7 @@ import (
 	"time"
 
 	"github.com/gin-gonic/gin"
+	"github.com/redis/go-redis/v9"
 	"go.uber.org/zap"
 
 	amqp "github.com/rabbitmq/amqp091-go"
@@ -24,9 +25,10 @@ type Server interface {
 }
 
 type ServerOptions struct {
-	Logger   *zap.Logger
-	Context  context.Context
-	AmqpConn *amqp.Connection
+	Logger    *zap.Logger
+	Context   context.Context
+	AmqpConn  *amqp.Connection
+	RedisConn *redis.Client
 }
 
 type server struct {

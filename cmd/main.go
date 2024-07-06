@@ -6,8 +6,10 @@ import (
 	"go-api-event/configs"
 	"go-api-event/internal/appctx"
 	"go-api-event/internal/server"
+	"strconv"
 
 	amqp "github.com/rabbitmq/amqp091-go"
+	"github.com/redis/go-redis/v9"
 	"go.uber.org/zap"
 )
 
@@ -32,10 +34,19 @@ func main() {
 
 	logger.Info("RabbitMQ Connected!")
 
+	redisConn, err := connectRedis(ctx)
+	if err != nil {
+		panic(err)
+	}
+	defer redisConn.Close()
+
+	logger.Info("Redis Connected!")
+
 	s := server.NewServer(server.ServerOptions{
-		Logger:   logger,
-		Context:  ctx,
-		AmqpConn: amqpConn,
+		Logger:    logger,
+		Context:   ctx,
+		AmqpConn:  amqpConn,
+		RedisConn: redisConn,
 	})
 	s.Start()
 }
@@ -62,4 +73,22 @@ func connectRabbitMQ(ctx context.Context) (*amqp.Connection, error) {
 			return nil, fmt.Errorf("error to connect RabbitMQ: %w", err)
 		}
 	}
+}
+
+func connectRedis(ctx context.Context) (*redis.Client, error) {
+	cfg := configs.GetConfig().RedisDB
+
+	client := redis.NewClient(&redis.Options{
+		Addr:       cfg.Host + ":" + strconv.Itoa(int(cfg.Port)),
+		Password:   cfg.Password,
+		DB:         0,
+		MaxRetries: cfg.ConnectRetry,
+	})
+
+	_, err := client.Ping(ctx).Result()
+	if err != nil {
+		return nil, fmt.Errorf("error to connect Redis. %w", err)
+	}
+
+	return client, nil
 }

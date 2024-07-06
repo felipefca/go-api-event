@@ -23,8 +23,6 @@ func NewRabbitMQService(conn *amqp.Connection, cfg configs.RabbitMQ) (*rabbitMQS
 	if err != nil {
 		return nil, err
 	}
-	// defer channel.Close()
-	// defer conn.Close()
 
 	messeger := rabbitMQService{
 		channel: channel,
@@ -62,6 +60,7 @@ func (r *rabbitMQService) SendMessage(ctx context.Context, message []byte) error
 		return err
 	}
 
+	logger.Info("Message successfully published")
 	return nil
 }
 

@@ -1,12 +1,17 @@
 package configs
 
-import "github.com/spf13/viper"
+import (
+	"time"
+
+	"github.com/spf13/viper"
+)
 
 var cfg *config
 
 type config struct {
 	Server   Server
 	RabbitMQ RabbitMQ
+	RedisDB  RedisDB
 }
 
 type Server struct {
@@ -28,6 +33,16 @@ type RabbitMQ struct {
 	RoutingKey             string
 	MaxRetry               int32
 	PrefetchCount          int32
+}
+
+type RedisDB struct {
+	KeyPrefix     string
+	Port          int32
+	ConnectRetry  int
+	Host          string
+	TimeOut       time.Duration
+	Password      string
+	ConnectionUrl string
 }
 
 func GetConfig() config {
@@ -62,6 +77,14 @@ func init() {
 			RoutingKey:             viper.GetString("RABBITMQ_ROUTING_KEY"),
 			MaxRetry:               viper.GetInt32("RABBITMQ_MAX_RETRY"),
 			PrefetchCount:          viper.GetInt32("RABBITMQ_PREFETCH_COUNT"),
+		},
+		RedisDB: RedisDB{
+			KeyPrefix:    viper.GetString("REDIS_KEYPREFIX"),
+			Port:         viper.GetInt32("REDIS_PORT"),
+			ConnectRetry: viper.GetInt("REDIS_CONNECTRETRY"),
+			Host:         viper.GetString("REDIS_HOST"),
+			TimeOut:      viper.GetDuration("REDIS_TIMEOUT"),
+			Password:     viper.GetString("REDIS_PASSWORD"),
 		},
 	}
 }
