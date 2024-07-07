@@ -28,7 +28,11 @@ curl --location 'http://localhost:8080/v1/event/GetRecentEvents' \
 
 - https://github.com/felipefca/go-job-aws-s3-kafka-event
 
+![Screenshot_3](https://github.com/felipefca/go-api-event/assets/21323326/691c6cfe-2bce-48bc-b437-b60964738db4)
+
 ### Using
+
+
 
 * [![Go][Go-badge]][Go-url]
 * [![Redis](https://img.shields.io/badge/Redis-v6.0-red.svg)](https://redis.io/)
