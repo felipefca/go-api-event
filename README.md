@@ -37,7 +37,12 @@ Executar o comando para inicializar o MongoDB, RabbitMQ e a aplicação na porta
    ```sh
    git clone https://github.com/felipefca/go-api-event.git
    ```
-2. exec
+
+2. Create .env
+   ```sh
+   cp .env.example .env
+   ```
+3. exec
    ```sh
    go run ./cmd/main.go
    ```
