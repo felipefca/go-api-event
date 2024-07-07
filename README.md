@@ -7,7 +7,7 @@ This application is a Go API that uses gin-gonic. It publishes events to RabbitM
 <!-- ABOUT THE PROJECT -->
 ## About the Project
 
-This API has two endpoints: one for publishing events to an exchange in RabbitMQ and another for querying the latest events in Redi
+This API has two endpoints: one for publishing events to an exchange in RabbitMQ and another for querying the latest events in Redis
 
 ```
 curl --location 'http://localhost:8080/v1/event/publish' \
