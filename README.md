@@ -38,17 +38,15 @@ Executar o comando para inicializar o MongoDB, RabbitMQ e a aplicação na porta
    git clone https://github.com/felipefca/go-api-event.git
    ```
 
-2. 
+2. Exec
    ```sh
    go mod tidy
    ```
-
-3. 
+   
    ```sh
    cp .env.example .env
    ```
-
-4. Exec
+      
    ```sh
    go run ./cmd/main.go
    ```
