@@ -5,16 +5,12 @@ services:
     ports:
       - "8080:8080"
     depends_on:
-      - mongodb
+      - redis
       - rabbitmq
     environment:
-      # CONNECTION_STRING: mongodb://teste123:e296cd9f@localhost:27017/admin?authSource=admin
-      # STOCK_COLLECTION: STOCKS
-      # FIAT_COLLECTION: FIATS
-      # DATABASE: CUSTOM_COMMAND
+      API_PORT: 8080
       RABBITMQ_USER: guest
       RABBITMQ_PASS: guest
-      # RABBITMQ_HOST: localhost:5672/
       RABBITMQ_HOST: localhost
       RABBITMQ_PORT: 5672
       RABBITMQ_VHOST: teste
@@ -26,24 +22,28 @@ services:
       RABBITMQ_TTL: 5000
       RABBITMQ_MAX_RETRY: 3
       RABBITMQ_PREFETCH_COUNT: 10
-      RABBITMQ_ROUTING_KEY: event-routing
-  mongodb:
-    image: mongo:latest
+      RABBITMQ_ROUTING_KEY: event-routing 
+      REDIS_PORT: 6379
+      REDIS_CONNECTRETRY: 3
+      REDIS_HOST: redis
+      REDIS_TIMEOUT: 5000
+      REDIS_PASSWORD: teste
+  redis:
+    image: redis:latest
     ports:
-      - "27017:27017"
+      - "6379:6379"
+    command: ["redis-server", "--requirepass", "teste"]
     environment:
-      MONGO_INITDB_ROOT_USERNAME: teste123
-      MONGO_INITDB_ROOT_PASSWORD: e296cd9f
+      REDIS_PASSWORD: teste
     networks:
-      - mongo-compose-network
+      - app-network
   rabbitmq:
     image: rabbitmq:3-management
     ports:
       - "5672:5672"
       - "15672:15672"
+    networks:
+      - app-network
 networks: 
-    mongo-compose-network:
+    app-network:
       driver: bridge
-
-
-
