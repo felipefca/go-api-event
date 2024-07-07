@@ -4,8 +4,8 @@ This application is a Go API that uses gin-gonic. It publishes events to RabbitM
 [![LinkedIn][linkedin-shield]][linkedin-url]
 
 
-<!-- SOBRE O PROJETO -->
-## Sobre o Projeto
+<!-- ABOUT THE PROJECT -->
+## About the Project
 
 This API has two endpoints: one for publishing events to an exchange in RabbitMQ and another for querying the latest events in Redi
 
@@ -23,7 +23,11 @@ curl --location 'http://localhost:8080/v1/event/GetRecentEvents' \
 --header 'x-correlation-id: 76eede83-9fc9-4db4-89e6-8f824b6a33b9'
 ```
 
-### Utilizando
+### Related Projects
+https://github.com/felipefca/go-worker-rabbitmq-kafka-event
+https://github.com/felipefca/go-job-aws-s3-kafka-event
+
+### Using
 
 * [![Go][Go-badge]][Go-url]
 * [![Redis](https://img.shields.io/badge/Redis-v6.0-red.svg)](https://redis.io/)
