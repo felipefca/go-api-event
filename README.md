@@ -1,5 +1,5 @@
 # go-api-event
-Esta aplicação é uma API em Go que utiliza gin-gonic. Publica eventos no RabbitMQ e faz query no Redis
+This application is a Go API that uses gin-gonic. It publishes events to RabbitMQ and queries Redis
 
 [![LinkedIn][linkedin-shield]][linkedin-url]
 
@@ -7,7 +7,7 @@ Esta aplicação é uma API em Go que utiliza gin-gonic. Publica eventos no Rabb
 <!-- SOBRE O PROJETO -->
 ## Sobre o Projeto
 
-API com dois endpoints para publicar eventos em uma exchange no RabbitMQ e consultar últimos eventos no Redis
+This API has two endpoints: one for publishing events to an exchange in RabbitMQ and another for querying the latest events in Redi
 
 ![img](https://user-images.githubusercontent.com/21323326/233877399-487d793c-76b4-445b-88fd-111c94145c26.png)
 
@@ -21,11 +21,11 @@ API com dois endpoints para publicar eventos em uma exchange no RabbitMQ e consu
 <!-- GETTING STARTED -->
 ## Getting Started
 
-Instruções para execução da aplicação
+Instructions for running the application
 
 ### Prerequisites
 
-Executar o comando para inicializar o MongoDB, RabbitMQ e a aplicação na porta selecionada
+Run the command to initialize MongoDB, RabbitMQ, and the application on the selected port
 * docker
   ```sh
   docker-compose up -d
