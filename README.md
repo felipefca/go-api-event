@@ -24,8 +24,9 @@ curl --location 'http://localhost:8080/v1/event/GetRecentEvents' \
 ```
 
 ### Related Projects
-https://github.com/felipefca/go-worker-rabbitmq-kafka-event
-https://github.com/felipefca/go-job-aws-s3-kafka-event
+- https://github.com/felipefca/go-worker-rabbitmq-kafka-event
+
+- https://github.com/felipefca/go-job-aws-s3-kafka-event
 
 ### Using
 
