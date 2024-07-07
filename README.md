@@ -46,7 +46,7 @@ Instructions for running the application
 
 ### Prerequisites
 
-Run the command to initialize MongoDB, RabbitMQ, and the application on the selected port
+Run the command to initialize RedisDB, RabbitMQ, and the application on the selected port
 * docker
   ```sh
   docker-compose up -d
